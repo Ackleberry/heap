@@ -24,3 +24,4 @@
   :src_files:
       - 'src/heap.c'
       - 'test/main.c'
+      - 'test/heap_test_helper.c'

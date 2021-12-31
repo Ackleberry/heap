@@ -42,7 +42,10 @@ typedef enum _Heap_Error_e
 **/
 typedef struct _Heap_t
 {
-    size_t   dummpy;    /*!< dummy*/
+    size_t   size;     /*!< Current size of heap */
+    uint8_t *pBuf;     /*!< Pointer to the heap buffer */
+    size_t   bufSize;  /*!< Size of the heap buffer */
+    size_t   dataSize; /*!< Size of the data type being stored in the heap */
 } Heap_t;
 
 #endif /* HEAP_T_H_INCLUDED */
