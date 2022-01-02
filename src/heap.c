@@ -46,12 +46,12 @@ Heap_Error_e Heap_Insert(Heap_t *pObj, void *pDataInVoid)
     {
         /* Adjust heap based off incoming data */
         size_t curIdx = pObj->size;
-        size_t parentIdx = curIdx / 2;
+        size_t parentIdx = ((curIdx - 1) / 2);
         while (curIdx > 0 && (*pDataIn > pObj->pBuf[parentIdx]))
         {
             pObj->pBuf[curIdx] = pObj->pBuf[parentIdx];
             curIdx = parentIdx;
-            parentIdx = curIdx / 2;
+            parentIdx = ((curIdx - 1) / 2);
         }
 
         /* Insert data */
@@ -83,44 +83,27 @@ Heap_Error_e Heap_Extract(Heap_t *pObj, void *pDataOutVoid)
         pObj->size--;
 
         /* Adjust heap */
-        size_t mPos;
-        size_t iPos = 0;
-        size_t lPos;
-        size_t rPos;
+        size_t childIdx = 1;
         uint8_t tempRoot = pObj->pBuf[0];
-
-        while (1)
+        while (childIdx < pObj->size)
         {
-            /* Select the larger child element */
-            lPos = (2 * iPos) + 1;
-            rPos = (2 * iPos) + 2;
-
-            if ((lPos < pObj->size) && (pObj->pBuf[lPos] > pObj->pBuf[iPos]))
+            /* Select the greater child element */
+            if ((childIdx < pObj->size - 1) && (pObj->pBuf[childIdx + 1] > pObj->pBuf[childIdx]))
             {
-                mPos = lPos;
-            }
-            else
-            {
-                mPos = iPos;
+                childIdx++;
             }
 
-            if ((rPos < pObj->size) && (pObj->pBuf[rPos] > pObj->pBuf[mPos]))
-            {
-                mPos = rPos;
-            }
-
-            if (mPos == iPos)
+            if (pObj->pBuf[childIdx] <= tempRoot) /* then the heap is adjusted */
             {
                 break;
             }
-            else
-            {
-                uint8_t temp = pObj->pBuf[mPos];
-                pObj->pBuf[mPos] = pObj->pBuf[iPos];
-                pObj->pBuf[iPos] = temp;
-                iPos = mPos;
-            }
+
+            /* Copy child to parent node */
+            pObj->pBuf[(childIdx - 1) / 2] = pObj->pBuf[childIdx];
+            childIdx = (2 * childIdx) + 1;
         }
+
+        pObj->pBuf[(childIdx - 1) / 2] = tempRoot;
     }
 
     return err;
