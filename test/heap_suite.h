@@ -163,7 +163,7 @@ TEST Heap_can_extract_full_buffer_of_1_byte_data_types_decending(void)
     Heap_Insert(&heap, &dataIn[4]);
 
     /*****************     Act       *****************/
-    uint8_t dataOut[4];
+    uint8_t dataOut[5];
     err |= Heap_Extract(&heap, &dataOut[0]);
     err |= Heap_Extract(&heap, &dataOut[1]);
     err |= Heap_Extract(&heap, &dataOut[2]);
@@ -197,7 +197,7 @@ TEST Heap_can_extract_full_buffer_of_1_byte_data_types_ascending(void)
     Heap_Insert(&heap, &dataIn[4]);
 
     /*****************     Act       *****************/
-    uint8_t dataOut[4];
+    uint8_t dataOut[5];
     err |= Heap_Extract(&heap, &dataOut[0]);
     err |= Heap_Extract(&heap, &dataOut[1]);
     err |= Heap_Extract(&heap, &dataOut[2]);
@@ -231,7 +231,7 @@ TEST Heap_can_extract_full_buffer_of_1_byte_data_types_random(void)
     Heap_Insert(&heap, &dataIn[4]);
 
     /*****************     Act       *****************/
-    uint8_t dataOut[4];
+    uint8_t dataOut[5];
     err |= Heap_Extract(&heap, &dataOut[0]);
     err |= Heap_Extract(&heap, &dataOut[1]);
     err |= Heap_Extract(&heap, &dataOut[2]);
