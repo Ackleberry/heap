@@ -59,6 +59,7 @@ TEST Heap_can_report_full(void)
     Heap_Insert(&heap, &dataIn);
     Heap_Insert(&heap, &dataIn);
     Heap_Insert(&heap, &dataIn);
+    Heap_Insert(&heap, &dataIn);
 
     /*****************     Act       *****************/
     bool isFull = Heap_IsFull(&heap);
@@ -114,6 +115,7 @@ TEST Heap_insert_fails_if_full(void)
     Heap_Insert(&heap, &dataIn);
     Heap_Insert(&heap, &dataIn);
     Heap_Insert(&heap, &dataIn);
+    Heap_Insert(&heap, &dataIn);
 
     /*****************     Act       *****************/
     Heap_Error_e err = Heap_Insert(&heap, &dataIn);
@@ -145,7 +147,7 @@ TEST Heap_can_extract_1_byte_data_types(void)
     PASS();
 }
 
-TEST Heap_can_extract_full_buffer_of_1_byte_data_types(void)
+TEST Heap_can_extract_full_buffer_of_1_byte_data_types_decending(void)
 {
     /*****************    Arrange    *****************/
     uint8_t err = (uint8_t)Heap_Error_None;
@@ -153,11 +155,12 @@ TEST Heap_can_extract_full_buffer_of_1_byte_data_types(void)
     uint8_t buf[5];
     Heap_Init(&heap, buf, sizeof(buf), sizeof(buf[0]));
 
-    uint8_t dataIn[] = { 10, 20, 30, 40 };
+    uint8_t dataIn[] = { 50, 40, 30, 20, 10 };
     Heap_Insert(&heap, &dataIn[0]);
     Heap_Insert(&heap, &dataIn[1]);
     Heap_Insert(&heap, &dataIn[2]);
     Heap_Insert(&heap, &dataIn[3]);
+    Heap_Insert(&heap, &dataIn[4]);
 
     /*****************     Act       *****************/
     uint8_t dataOut[4];
@@ -165,13 +168,83 @@ TEST Heap_can_extract_full_buffer_of_1_byte_data_types(void)
     err |= Heap_Extract(&heap, &dataOut[1]);
     err |= Heap_Extract(&heap, &dataOut[2]);
     err |= Heap_Extract(&heap, &dataOut[3]);
+    err |= Heap_Extract(&heap, &dataOut[4]);
 
     /*****************    Assert     *****************/
     ASSERT_EQ(Heap_Error_None, (Heap_Error_e)err);
-    ASSERT_EQ(dataIn[3], dataOut[0]);
+    ASSERT_EQ(dataIn[0], dataOut[0]);
+    ASSERT_EQ(dataIn[1], dataOut[1]);
+    ASSERT_EQ(dataIn[2], dataOut[2]);
+    ASSERT_EQ(dataIn[3], dataOut[3]);
+    ASSERT_EQ(dataIn[4], dataOut[4]);
+
+    PASS();
+}
+
+TEST Heap_can_extract_full_buffer_of_1_byte_data_types_ascending(void)
+{
+    /*****************    Arrange    *****************/
+    uint8_t err = (uint8_t)Heap_Error_None;
+    Heap_t heap;
+    uint8_t buf[5];
+    Heap_Init(&heap, buf, sizeof(buf), sizeof(buf[0]));
+
+    uint8_t dataIn[] = { 10, 20, 30, 40, 50 };
+    Heap_Insert(&heap, &dataIn[0]);
+    Heap_Insert(&heap, &dataIn[1]);
+    Heap_Insert(&heap, &dataIn[2]);
+    Heap_Insert(&heap, &dataIn[3]);
+    Heap_Insert(&heap, &dataIn[4]);
+
+    /*****************     Act       *****************/
+    uint8_t dataOut[4];
+    err |= Heap_Extract(&heap, &dataOut[0]);
+    err |= Heap_Extract(&heap, &dataOut[1]);
+    err |= Heap_Extract(&heap, &dataOut[2]);
+    err |= Heap_Extract(&heap, &dataOut[3]);
+    err |= Heap_Extract(&heap, &dataOut[4]);
+
+    /*****************    Assert     *****************/
+    ASSERT_EQ(Heap_Error_None, (Heap_Error_e)err);
+    ASSERT_EQ(dataIn[4], dataOut[0]);
+    ASSERT_EQ(dataIn[3], dataOut[1]);
+    ASSERT_EQ(dataIn[2], dataOut[2]);
+    ASSERT_EQ(dataIn[1], dataOut[3]);
+    ASSERT_EQ(dataIn[0], dataOut[4]);
+
+    PASS();
+}
+
+TEST Heap_can_extract_full_buffer_of_1_byte_data_types_random(void)
+{
+    /*****************    Arrange    *****************/
+    uint8_t err = (uint8_t)Heap_Error_None;
+    Heap_t heap;
+    uint8_t buf[5];
+    Heap_Init(&heap, buf, sizeof(buf), sizeof(buf[0]));
+
+    uint8_t dataIn[] = { 30, 50, 40, 10, 20 };
+    Heap_Insert(&heap, &dataIn[0]);
+    Heap_Insert(&heap, &dataIn[1]);
+    Heap_Insert(&heap, &dataIn[2]);
+    Heap_Insert(&heap, &dataIn[3]);
+    Heap_Insert(&heap, &dataIn[4]);
+
+    /*****************     Act       *****************/
+    uint8_t dataOut[4];
+    err |= Heap_Extract(&heap, &dataOut[0]);
+    err |= Heap_Extract(&heap, &dataOut[1]);
+    err |= Heap_Extract(&heap, &dataOut[2]);
+    err |= Heap_Extract(&heap, &dataOut[3]);
+    err |= Heap_Extract(&heap, &dataOut[4]);
+
+    /*****************    Assert     *****************/
+    ASSERT_EQ(Heap_Error_None, (Heap_Error_e)err);
+    ASSERT_EQ(dataIn[1], dataOut[0]);
     ASSERT_EQ(dataIn[2], dataOut[1]);
-    ASSERT_EQ(dataIn[1], dataOut[2]);
-    ASSERT_EQ(dataIn[0], dataOut[3]);
+    ASSERT_EQ(dataIn[0], dataOut[2]);
+    ASSERT_EQ(dataIn[4], dataOut[3]);
+    ASSERT_EQ(dataIn[3], dataOut[4]);
 
     PASS();
 }
@@ -185,7 +258,9 @@ SUITE(Heap_Suite)
     RUN_TEST(Heap_extract_fails_if_empty);
     RUN_TEST(Heap_insert_fails_if_full);
     RUN_TEST(Heap_can_extract_1_byte_data_types);
-    RUN_TEST(Heap_can_extract_full_buffer_of_1_byte_data_types);
+    RUN_TEST(Heap_can_extract_full_buffer_of_1_byte_data_types_decending);
+    RUN_TEST(Heap_can_extract_full_buffer_of_1_byte_data_types_ascending);
+    RUN_TEST(Heap_can_extract_full_buffer_of_1_byte_data_types_random);
 }
 
 #endif /* HEAP_SUITE_INCLUDED */
