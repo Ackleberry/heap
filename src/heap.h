@@ -31,10 +31,12 @@
  * @param pBuf      Pointer to the heap buffer
  * @param bufSize   Size of the buffer, must be an integer multiple of datasize
  * @param dataSize  Size of the data type that the heap is handling
+ * @param pCmpFn    Pointer to compare function used for comparing data
  *
  * @return none
  ******************************************************************************/
-void Heap_Init(Heap_t *pObj, void *pBuf, size_t bufSize, size_t dataSize);
+void Heap_Init(Heap_t *pObj, void *pBuf, size_t bufSize, size_t dataSize,
+               CmpFnPtr_t pCmpFn);
 
 /*******************************************************************************
  * @brief  Check if the heap is empty

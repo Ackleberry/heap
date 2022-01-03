@@ -7,4 +7,6 @@
 
 void TestHelper_PrintHeap(Heap_t *pObj);
 
+int8_t TestHelper_Compare1ByteData(void *pDataRefVoid, void *pDataInVoid);
+
 #endif /* HEAP_TEST_HELPER_H_INCLUDED */

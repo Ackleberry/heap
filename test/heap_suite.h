@@ -17,7 +17,7 @@ TEST Heap_can_report_empty(void)
     /*****************    Arrange    *****************/
     Heap_t heap;
     uint8_t buf[5];
-    Heap_Init(&heap, buf, sizeof(buf), sizeof(buf[0]));
+    Heap_Init(&heap, buf, sizeof(buf), sizeof(buf[0]), NULL);
 
     /*****************     Act       *****************/
     bool isEmpty = Heap_IsEmpty(&heap);
@@ -33,7 +33,7 @@ TEST Heap_can_report_not_empty(void)
     /*****************    Arrange    *****************/
     Heap_t heap;
     uint8_t buf[5];
-    Heap_Init(&heap, buf, sizeof(buf), sizeof(buf[0]));
+    Heap_Init(&heap, buf, sizeof(buf), sizeof(buf[0]), TestHelper_Compare1ByteData);
 
     uint8_t dataIn = 10;
     Heap_Insert(&heap, &dataIn);
@@ -52,7 +52,7 @@ TEST Heap_can_report_full(void)
     /*****************    Arrange    *****************/
     Heap_t heap;
     uint8_t buf[5];
-    Heap_Init(&heap, buf, sizeof(buf), sizeof(buf[0]));
+    Heap_Init(&heap, buf, sizeof(buf), sizeof(buf[0]), TestHelper_Compare1ByteData);
 
     uint8_t dataIn = 10;
     Heap_Insert(&heap, &dataIn);
@@ -75,7 +75,7 @@ TEST Heap_can_report_not_full(void)
     /*****************    Arrange    *****************/
     Heap_t heap;
     uint8_t buf[5];
-    Heap_Init(&heap, buf, sizeof(buf), sizeof(buf[0]));
+    Heap_Init(&heap, buf, sizeof(buf), sizeof(buf[0]), TestHelper_Compare1ByteData);
 
     /*****************     Act       *****************/
     bool isFull = Heap_IsFull(&heap);
@@ -91,7 +91,7 @@ TEST Heap_extract_fails_if_empty(void)
     /*****************    Arrange    *****************/
     Heap_t heap;
     uint8_t buf[5];
-    Heap_Init(&heap, buf, sizeof(buf), sizeof(buf[0]));
+    Heap_Init(&heap, buf, sizeof(buf), sizeof(buf[0]), TestHelper_Compare1ByteData);
 
     /*****************     Act       *****************/
     uint8_t dataOut;
@@ -108,7 +108,7 @@ TEST Heap_insert_fails_if_full(void)
     /*****************    Arrange    *****************/
     Heap_t heap;
     uint8_t buf[5];
-    Heap_Init(&heap, buf, sizeof(buf), sizeof(buf[0]));
+    Heap_Init(&heap, buf, sizeof(buf), sizeof(buf[0]), TestHelper_Compare1ByteData);
 
     uint8_t dataIn = 10;
     Heap_Insert(&heap, &dataIn);
@@ -131,7 +131,7 @@ TEST Heap_can_extract_1_byte_data_types(void)
     /*****************    Arrange    *****************/
     Heap_t heap;
     uint8_t buf[5];
-    Heap_Init(&heap, buf, sizeof(buf), sizeof(buf[0]));
+    Heap_Init(&heap, buf, sizeof(buf), sizeof(buf[0]), TestHelper_Compare1ByteData);
 
     uint8_t dataIn = 10;
     Heap_Insert(&heap, &dataIn);
@@ -153,7 +153,7 @@ TEST Heap_can_extract_full_buffer_of_1_byte_data_types_decending(void)
     uint8_t err = (uint8_t)Heap_Error_None;
     Heap_t heap;
     uint8_t buf[5];
-    Heap_Init(&heap, buf, sizeof(buf), sizeof(buf[0]));
+    Heap_Init(&heap, buf, sizeof(buf), sizeof(buf[0]), TestHelper_Compare1ByteData);
 
     uint8_t dataIn[] = { 50, 40, 30, 20, 10 };
     Heap_Insert(&heap, &dataIn[0]);
@@ -187,7 +187,7 @@ TEST Heap_can_extract_full_buffer_of_1_byte_data_types_ascending(void)
     uint8_t err = (uint8_t)Heap_Error_None;
     Heap_t heap;
     uint8_t buf[5];
-    Heap_Init(&heap, buf, sizeof(buf), sizeof(buf[0]));
+    Heap_Init(&heap, buf, sizeof(buf), sizeof(buf[0]), TestHelper_Compare1ByteData);
 
     uint8_t dataIn[] = { 10, 20, 30, 40, 50 };
     Heap_Insert(&heap, &dataIn[0]);
@@ -221,7 +221,7 @@ TEST Heap_can_extract_full_buffer_of_1_byte_data_types_random(void)
     uint8_t err = (uint8_t)Heap_Error_None;
     Heap_t heap;
     uint8_t buf[5];
-    Heap_Init(&heap, buf, sizeof(buf), sizeof(buf[0]));
+    Heap_Init(&heap, buf, sizeof(buf), sizeof(buf[0]), TestHelper_Compare1ByteData);
 
     uint8_t dataIn[] = { 30, 50, 40, 10, 20 };
     Heap_Insert(&heap, &dataIn[0]);
