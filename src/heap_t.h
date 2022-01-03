@@ -30,13 +30,13 @@
  *          compare the data.
  *
  * @param pDataRefVoid  Refernece data
- * @param pDataInVoid   Incoming data compared against the reference
+ * @param pDataVoid     Data compared against the reference
  *
  * @returns -1 - DataIn is less than Reference
  *           0 - DataIn is equal to Reference
  *          +1 - DataIn is greater than Reference
  ******************************************************************************/
-typedef int8_t (*CmpFnPtr_t)(void *pDataRefVoid, void *pDataInVoid);
+typedef int8_t (*CmpFnPtr_t)(void *pDataRefVoid, void *pDataVoid);
 
 /*============================================================================*
  *                           E N U M E R A T I O N S                          *
