@@ -23,7 +23,7 @@ int8_t TestHelper_Compare1ByteData(void *pDataRefVoid, void *pDataInVoid)
     {
         retVal = 1;
     }
-    if (*pDataIn < *pDataRef)
+    else if (*pDataIn < *pDataRef)
     {
         retVal = -1;
     }
