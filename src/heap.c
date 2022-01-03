@@ -15,8 +15,10 @@
  *                      P U B L I C    F U N C T I O N S                      *
  *============================================================================*/
 
-void Heap_Init(Heap_t *pObj, void *pBuf, size_t bufSize, size_t dataSize, CmpFnPtr_t pCmpFn)
+void Heap_Init(Heap_t *pObj, Heap_Type_e type, void *pBuf, size_t bufSize,
+               size_t dataSize, CmpFnPtr_t pCmpFn)
 {
+    pObj->type = type;
     pObj->size = 0;
     pObj->pBuf = pBuf;
     pObj->bufSize = bufSize;
@@ -48,7 +50,7 @@ Heap_Error_e Heap_Insert(Heap_t *pObj, void *pDataInVoid)
         /* Adjust heap based off incoming data */
         size_t curIdx = pObj->size;
         size_t parentIdx = ((curIdx - 1) / 2);
-        while (curIdx > 0 && (pObj->pCmpFn(pDataIn, &pObj->pBuf[parentIdx]) == -1))
+        while (curIdx > 0 && (pObj->pCmpFn(&pObj->pBuf[parentIdx], pDataIn) == pObj->type))
         {
             pObj->pBuf[curIdx] = pObj->pBuf[parentIdx];
             curIdx = parentIdx;
@@ -89,12 +91,14 @@ Heap_Error_e Heap_Extract(Heap_t *pObj, void *pDataOutVoid)
         while (childIdx < pObj->size)
         {
             /* Select the greater child element */
-            if ((childIdx < pObj->size - 1) && (pObj->pCmpFn(&pObj->pBuf[childIdx + 1], &pObj->pBuf[childIdx]) == -1))
+            int8_t retVal = pObj->pCmpFn(&pObj->pBuf[childIdx], &pObj->pBuf[childIdx + 1]);
+            if ((childIdx < pObj->size - 1) && retVal == pObj->type)
             {
                 childIdx++;
             }
 
-            if (pObj->pCmpFn(&pObj->pBuf[childIdx], &tempRoot) >= 0)
+            retVal = pObj->pCmpFn(&pObj->pBuf[childIdx], &tempRoot);
+            if (retVal == pObj->type || retVal == 0)
             {
                 break; /* Heap is adjusted */
             }

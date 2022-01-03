@@ -35,8 +35,8 @@
  *
  * @return none
  ******************************************************************************/
-void Heap_Init(Heap_t *pObj, void *pBuf, size_t bufSize, size_t dataSize,
-               CmpFnPtr_t pCmpFn);
+void Heap_Init(Heap_t *pObj, Heap_Type_e type, void *pBuf, size_t bufSize,
+               size_t dataSize, CmpFnPtr_t pCmpFn);
 
 /*******************************************************************************
  * @brief  Check if the heap is empty

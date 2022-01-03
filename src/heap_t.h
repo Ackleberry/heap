@@ -51,6 +51,12 @@ typedef enum _Heap_Error_e
     Heap_Error      = 1,
 } Heap_Error_e;
 
+typedef enum _Heap_Type_e
+{
+    Heap_Type_Min = -1,
+    Heap_Type_Max = +1,
+} Heap_Type_e;
+
 /*============================================================================*
  *                             S T R U C T U R E S                            *
  *============================================================================*/
@@ -62,6 +68,7 @@ typedef enum _Heap_Error_e
 **/
 typedef struct _Heap_t
 {
+    Heap_Type_e type;
     size_t      size;     /*!< Current size of heap */
     uint8_t    *pBuf;     /*!< Pointer to the heap buffer */
     size_t      bufSize;  /*!< Size of the heap buffer */
